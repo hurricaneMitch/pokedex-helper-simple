@@ -2,185 +2,164 @@ import { useState, useEffect } from 'react';
 import pokemonService from '../services/pokemonService';
 import '../styles/PokemonForm.css';
 
+const SPRITE_URL = (name) =>
+  `https://img.pokemondb.net/sprites/home/normal/${name.toLowerCase()}.png`;
+
+const CAT_LABELS = { regular: '● Regular', shiny: '★ Shiny', xxl: '▲ XXL' };
+
 export default function PokemonForm({ pokemon, onSave, onCancel }) {
-  const [formData, setFormData] = useState({
-    pokemonId: '',
-    name: '',
-    image: '',
-    category: 'regular',
-    level: '',
-    iv: '',
-    notes: ''
-  });
-  const [error, setError] = useState('');
+  const isEditing = !!(pokemon && pokemon._id);
+
+  // When editing: single category string. When adding: array of selected categories.
+  const [selectedCats, setSelectedCats] = useState(
+    isEditing ? [pokemon.category || 'regular'] : []
+  );
+  const [level, setLevel]   = useState(isEditing ? (pokemon.level  || '') : '');
+  const [iv, setIv]         = useState(isEditing ? (pokemon.iv     || '') : '');
+  const [notes, setNotes]   = useState(isEditing ? (pokemon.notes  || '') : '');
+  const [error, setError]   = useState('');
   const [loading, setLoading] = useState(false);
-  const [pokeSearch, setPokeSearch] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    if (pokemon) {
-      setFormData(pokemon);
+    if (isEditing) {
+      setSelectedCats([pokemon.category || 'regular']);
+      setLevel(pokemon.level  || '');
+      setIv(pokemon.iv        || '');
+      setNotes(pokemon.notes  || '');
     }
   }, [pokemon]);
 
-  const fetchPokemonSuggestions = async (query) => {
-    if (query.length < 2) {
-      setSuggestions([]);
-      return;
+  const toggleCat = (cat) => {
+    if (isEditing) {
+      // Single-select when editing an existing entry
+      setSelectedCats([cat]);
+    } else {
+      // Multi-select when adding new
+      setSelectedCats((prev) =>
+        prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+      );
     }
-
-    try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
-      const data = await response.json();
-      const filtered = data.results.filter(p => p.name.includes(query.toLowerCase())).slice(0, 10);
-      setSuggestions(filtered);
-    } catch {
-      setSuggestions([]);
-    }
-  };
-
-  const selectPokemon = async (pokemonName) => {
-    try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
-      const data = await response.json();
-      const imageUrl = data.sprites.front_default || '';
-
-      setFormData({
-        ...formData,
-        pokemonId: data.id,
-        name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
-        image: imageUrl
-      });
-      setSuggestions([]);
-      setPokeSearch('');
-    } catch {
-      setError('Failed to fetch Pokemon data');
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setPokeSearch(value);
-    fetchPokemonSuggestions(value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (selectedCats.length === 0) {
+      setError('Please select at least one category');
+      return;
+    }
     setError('');
     setLoading(true);
 
+    const base = {
+      pokemonId: pokemon.pokemonId || pokemon.id,
+      name: pokemon.name,
+      image: SPRITE_URL(pokemon.name),
+      level: level || null,
+      iv: iv     || null,
+      notes: notes || ''
+    };
+
     try {
-      if (pokemon && pokemon._id) {
-        await pokemonService.update(pokemon._id, formData);
+      if (isEditing) {
+        await pokemonService.update(pokemon._id, { ...base, category: selectedCats[0] });
       } else {
-        await pokemonService.create(formData);
+        // Create one entry per selected category in parallel
+        await Promise.all(
+          selectedCats.map((cat) => pokemonService.create({ ...base, category: cat }))
+        );
       }
       onSave();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save Pokemon');
+      setError(err.response?.data?.message || 'Failed to save Pokémon');
     } finally {
       setLoading(false);
     }
   };
 
+  const saveLabel = loading
+    ? 'Saving...'
+    : isEditing
+      ? 'Update'
+      : selectedCats.length > 1
+        ? `Add ${selectedCats.length} entries`
+        : 'Add to Collection';
+
   return (
-    <div className="pokemon-form-overlay">
-      <div className="pokemon-form">
-        <h2>{pokemon && pokemon._id ? 'Edit Pokemon' : 'Add Pokemon'}</h2>
+    <div className="panel-overlay" onClick={(e) => e.target === e.currentTarget && onCancel()}>
+      <div className="category-panel">
+        <button className="panel-close" onClick={onCancel} aria-label="Close">×</button>
+
+        <div className="panel-pokemon">
+          <img
+            src={SPRITE_URL(pokemon.name)}
+            alt={pokemon.name}
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+          <h2>{pokemon.name}</h2>
+        </div>
+
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="pokemonSearch">Search Pokemon</label>
-            <input
-              id="pokemonSearch"
-              type="text"
-              placeholder="Type Pokemon name..."
-              value={pokeSearch}
-              onChange={handleSearchChange}
-            />
-            {suggestions.length > 0 && (
-              <ul className="suggestions">
-                {suggestions.map(p => (
-                  <li key={p.name} onClick={() => selectPokemon(p.name)}>
-                    {p.name.charAt(0).toUpperCase() + p.name.slice(1)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {formData.image && (
-            <div className="pokemon-image">
-              <img src={formData.image} alt={formData.name} />
+            <label>{isEditing ? 'Category' : 'Categories (select all that apply)'}</label>
+            <div className="category-buttons">
+              {['regular', 'shiny', 'xxl'].map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  className={`cat-btn cat-${cat} ${selectedCats.includes(cat) ? 'active' : ''}`}
+                  onClick={() => toggleCat(cat)}
+                >
+                  {CAT_LABELS[cat]}
+                </button>
+              ))}
             </div>
-          )}
-
-          <div className="form-group">
-            <label htmlFor="category">Category</label>
-            <select
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="regular">Regular</option>
-              <option value="shiny">Shiny</option>
-              <option value="xxl">XXL</option>
-            </select>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="level">Level (optional)</label>
-            <input
-              id="level"
-              type="number"
-              name="level"
-              value={formData.level}
-              onChange={handleInputChange}
-              min="1"
-              max="50"
-              placeholder="1-50"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="iv">IV Score (optional)</label>
-            <input
-              id="iv"
-              type="number"
-              name="iv"
-              value={formData.iv}
-              onChange={handleInputChange}
-              min="0"
-              max="100"
-              placeholder="0-100"
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="level">Level</label>
+              <input
+                id="level"
+                type="number"
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+                min="1" max="50"
+                placeholder="1–50"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="iv">IV Score</label>
+              <input
+                id="iv"
+                type="number"
+                value={iv}
+                onChange={(e) => setIv(e.target.value)}
+                min="0" max="100"
+                placeholder="0–100"
+              />
+            </div>
           </div>
 
           <div className="form-group">
             <label htmlFor="notes">Notes</label>
             <textarea
               id="notes"
-              name="notes"
-              value={formData.notes}
-              onChange={handleInputChange}
-              placeholder="Add any notes..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Optional notes..."
+              rows={3}
             />
           </div>
 
           <div className="form-actions">
-            <button type="submit" disabled={loading || !formData.pokemonId}>
-              {loading ? 'Saving...' : 'Save'}
-            </button>
-            <button type="button" onClick={onCancel} className="cancel-btn">
-              Cancel
+            <button
+              type="submit"
+              className="save-btn"
+              disabled={loading || selectedCats.length === 0}
+            >
+              {saveLabel}
             </button>
           </div>
         </form>
