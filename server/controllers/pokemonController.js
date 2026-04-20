@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Pokemon = require('../models/Pokemon');
 
 exports.getAll = async (req, res) => {
@@ -32,13 +33,14 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const { pokemonId, name, image, category, level, iv, notes } = req.body;
+    const { pokemonId, name, image, category, notes } = req.body;
 
     if (!pokemonId || !name || !category) {
       return res.status(400).json({ message: 'pokemonId, name, and category are required' });
     }
 
-    if (!['shiny', 'regular', 'xxl'].includes(category)) {
+    const VALID_CATEGORIES = ['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague', 'dynamax', 'gigantamax'];
+    if (!VALID_CATEGORIES.includes(category)) {
       return res.status(400).json({ message: 'Invalid category' });
     }
 
@@ -48,8 +50,6 @@ exports.create = async (req, res) => {
       name,
       image: image || null,
       category,
-      level: level || null,
-      iv: iv || null,
       notes: notes || ''
     });
 
@@ -62,15 +62,13 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const { pokemonId, name, image, category, level, iv, notes } = req.body;
+    const { pokemonId, name, image, category, notes } = req.body;
     const updateData = {};
 
     if (pokemonId !== undefined) updateData.pokemonId = pokemonId;
     if (name !== undefined) updateData.name = name;
     if (image !== undefined) updateData.image = image;
     if (category !== undefined) updateData.category = category;
-    if (level !== undefined) updateData.level = level;
-    if (iv !== undefined) updateData.iv = iv;
     if (notes !== undefined) updateData.notes = notes;
 
     updateData.updatedAt = Date.now();
@@ -108,7 +106,7 @@ exports.delete = async (req, res) => {
 exports.getStats = async (req, res) => {
   try {
     const stats = await Pokemon.aggregate([
-      { $match: { userId: req.userId } },
+      { $match: { userId: new mongoose.Types.ObjectId(req.userId) } },
       {
         $group: {
           _id: '$category',
@@ -118,9 +116,16 @@ exports.getStats = async (req, res) => {
     ]);
 
     const result = {
-      shiny: 0,
       regular: 0,
-      xxl: 0
+      shiny: 0,
+      xxl: 0,
+      hundo: 0,
+      littleleague: 0,
+      greatleague: 0,
+      ultraleague: 0,
+      masterleague: 0,
+      dynamax: 0,
+      gigantamax: 0
     };
 
     stats.forEach(stat => {

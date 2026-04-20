@@ -69,9 +69,16 @@ export default function PokemonGrid({ trackedPokemon = [], searchQuery = '', onS
             <span className="poke-name">{capitalize(p.name)}</span>
             {categories.length > 0 && (
               <div className="tracked-badges">
-                {categories.includes('regular') && <span className="badge regular" title="Regular">●</span>}
-                {categories.includes('shiny')   && <span className="badge shiny"   title="Shiny">★</span>}
-                {categories.includes('xxl')     && <span className="badge xxl"     title="XXL">▲</span>}
+                {categories.includes('regular')      && <span className="badge regular"      title="Regular">●</span>}
+                {categories.includes('shiny')        && <span className="badge shiny"        title="Shiny">★</span>}
+                {categories.includes('xxl')          && <span className="badge xxl"          title="XXL">▲</span>}
+                {categories.includes('hundo')        && <span className="badge hundo"        title="Hundo">💯</span>}
+                {categories.includes('littleleague') && <span className="badge littleleague" title="Little League">L</span>}
+                {categories.includes('greatleague')  && <span className="badge greatleague"  title="Great League">G</span>}
+                {categories.includes('ultraleague')  && <span className="badge ultraleague"  title="Ultra League">U</span>}
+                {categories.includes('masterleague') && <span className="badge masterleague" title="Master League">M</span>}
+                {categories.includes('dynamax')      && <span className="badge dynamax"      title="Dynamax">D</span>}
+                {categories.includes('gigantamax')   && <span className="badge gigantamax"   title="Gigantamax">GX</span>}
               </div>
             )}
           </div>

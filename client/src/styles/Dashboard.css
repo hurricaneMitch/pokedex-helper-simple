@@ -27,9 +27,16 @@
 }
 
 .hstat { opacity: 0.95; }
-.hstat.regular { color: #86efac; }
-.hstat.shiny   { color: #fcd34d; }
-.hstat.xxl     { color: #a5b4fc; }
+.hstat.regular      { color: #86efac; }
+.hstat.shiny        { color: #fcd34d; }
+.hstat.xxl          { color: #a5b4fc; }
+.hstat.hundo        { color: #fca5a5; }
+.hstat.littleleague { color: #d1d5db; }
+.hstat.greatleague  { color: #5eead4; }
+.hstat.ultraleague  { color: #c4b5fd; }
+.hstat.masterleague { color: #fde68a; }
+.hstat.dynamax      { color: #94a3b8; }
+.hstat.gigantamax   { color: #f9a8d4; }
 
 .logout-btn {
   background: rgba(255, 255, 255, 0.2);
