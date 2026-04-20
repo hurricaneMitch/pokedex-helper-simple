@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Pokemon = require('../models/Pokemon');
 
 exports.getAll = async (req, res) => {
@@ -105,7 +106,7 @@ exports.delete = async (req, res) => {
 exports.getStats = async (req, res) => {
   try {
     const stats = await Pokemon.aggregate([
-      { $match: { userId: req.userId } },
+      { $match: { userId: new mongoose.Types.ObjectId(req.userId) } },
       {
         $group: {
           _id: '$category',
