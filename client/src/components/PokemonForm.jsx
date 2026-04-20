@@ -5,7 +5,16 @@ import '../styles/PokemonForm.css';
 const SPRITE_URL = (name) =>
   `https://img.pokemondb.net/sprites/home/normal/${name.toLowerCase()}.png`;
 
-const CAT_LABELS = { regular: '● Regular', shiny: '★ Shiny', xxl: '▲ XXL' };
+const CATEGORIES = [
+  { id: 'regular',     label: '● Regular'      },
+  { id: 'shiny',       label: '★ Shiny'        },
+  { id: 'xxl',         label: '▲ XXL'          },
+  { id: 'hundo',       label: '💯 Hundo'       },
+  { id: 'littleleague', label: '🏅 Little'     },
+  { id: 'greatleague', label: '🥈 Great'       },
+  { id: 'ultraleague', label: '🥇 Ultra'       },
+  { id: 'masterleague', label: '👑 Master'     },
+];
 
 export default function PokemonForm({ pokemon, onSave, onCancel }) {
   const isEditing = !!(pokemon && pokemon._id);
@@ -104,14 +113,14 @@ export default function PokemonForm({ pokemon, onSave, onCancel }) {
           <div className="form-group">
             <label>{isEditing ? 'Category' : 'Categories (select all that apply)'}</label>
             <div className="category-buttons">
-              {['regular', 'shiny', 'xxl'].map((cat) => (
+              {CATEGORIES.map(({ id, label }) => (
                 <button
-                  key={cat}
+                  key={id}
                   type="button"
-                  className={`cat-btn cat-${cat} ${selectedCats.includes(cat) ? 'active' : ''}`}
-                  onClick={() => toggleCat(cat)}
+                  className={`cat-btn cat-${id} ${selectedCats.includes(id) ? 'active' : ''}`}
+                  onClick={() => toggleCat(id)}
                 >
-                  {CAT_LABELS[cat]}
+                  {label}
                 </button>
               ))}
             </div>

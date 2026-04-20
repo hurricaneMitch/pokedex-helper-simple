@@ -61,9 +61,14 @@
   line-height: 1;
 }
 
-.badge.regular { color: #22c55e; }
-.badge.shiny   { color: #f59e0b; }
-.badge.xxl     { color: #667eea; }
+.badge.regular      { color: #22c55e; }
+.badge.shiny        { color: #f59e0b; }
+.badge.xxl          { color: #667eea; }
+.badge.hundo        { font-size: 0.55rem; }
+.badge.littleleague { color: #6b7280; font-weight: 700; }
+.badge.greatleague  { color: #14b8a6; font-weight: 700; }
+.badge.ultraleague  { color: #8b5cf6; font-weight: 700; }
+.badge.masterleague { color: #b45309; font-weight: 700; }
 
 .grid-loading,
 .grid-error {

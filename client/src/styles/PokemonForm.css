@@ -97,28 +97,34 @@
 
 /* Category toggle buttons */
 .category-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
 }
 
 .cat-btn {
-  flex: 1;
   padding: 0.6rem 0.4rem;
   border: 2px solid #ddd;
   border-radius: 6px;
   background: white;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #888;
   transition: all 0.15s;
+  text-align: center;
 }
 
 .cat-btn:hover { border-color: #aaa; color: #555; }
 
-.cat-btn.cat-regular.active { border-color: #22c55e; color: #22c55e; background: #f0fdf4; }
-.cat-btn.cat-shiny.active   { border-color: #f59e0b; color: #f59e0b; background: #fffbeb; }
-.cat-btn.cat-xxl.active     { border-color: #667eea; color: #667eea; background: #eef2ff; }
+.cat-btn.cat-regular.active      { border-color: #22c55e; color: #22c55e; background: #f0fdf4; }
+.cat-btn.cat-shiny.active        { border-color: #f59e0b; color: #f59e0b; background: #fffbeb; }
+.cat-btn.cat-xxl.active          { border-color: #667eea; color: #667eea; background: #eef2ff; }
+.cat-btn.cat-hundo.active        { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+.cat-btn.cat-littleleague.active { border-color: #6b7280; color: #6b7280; background: #f9fafb; }
+.cat-btn.cat-greatleague.active  { border-color: #14b8a6; color: #14b8a6; background: #f0fdfa; }
+.cat-btn.cat-ultraleague.active  { border-color: #8b5cf6; color: #8b5cf6; background: #f5f3ff; }
+.cat-btn.cat-masterleague.active { border-color: #f59e0b; color: #b45309; background: #fefce8; }
 
 /* Save button */
 .form-actions { margin-top: 1.5rem; }

@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery]     = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [allTracked, setAllTracked]       = useState([]);
-  const [stats, setStats]                 = useState({ shiny: 0, regular: 0, xxl: 0 });
+  const [stats, setStats]                 = useState({ regular: 0, shiny: 0, xxl: 0, hundo: 0, littleleague: 0, greatleague: 0, ultraleague: 0, masterleague: 0 });
   const [refreshKey, setRefreshKey]       = useState(0);
   const navigate = useNavigate();
 
@@ -57,9 +57,14 @@ export default function Dashboard() {
       <header className="dashboard-header">
         <h1>Pokémon Go Tracker</h1>
         <div className="header-stats">
-          <span className="hstat regular">● {stats.regular}</span>
-          <span className="hstat shiny">★ {stats.shiny}</span>
-          <span className="hstat xxl">▲ {stats.xxl}</span>
+          <span className="hstat regular"      title="Regular">● {stats.regular}</span>
+          <span className="hstat shiny"        title="Shiny">★ {stats.shiny}</span>
+          <span className="hstat xxl"          title="XXL">▲ {stats.xxl}</span>
+          <span className="hstat hundo"        title="Hundo">💯 {stats.hundo}</span>
+          <span className="hstat littleleague" title="Little League">L {stats.littleleague}</span>
+          <span className="hstat greatleague"  title="Great League">G {stats.greatleague}</span>
+          <span className="hstat ultraleague"  title="Ultra League">U {stats.ultraleague}</span>
+          <span className="hstat masterleague" title="Master League">M {stats.masterleague}</span>
         </div>
         <button onClick={handleLogout} className="logout-btn">Logout</button>
       </header>
@@ -99,13 +104,13 @@ export default function Dashboard() {
       ) : (
         <>
           <div className="tabs">
-            {['regular', 'shiny', 'xxl'].map((cat) => (
+            {['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague'].map((cat) => (
               <button
                 key={cat}
                 className={`tab ${activeTab === cat ? 'active' : ''}`}
                 onClick={() => setActiveTab(cat)}
               >
-                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                {{ regular: 'Regular', shiny: 'Shiny', xxl: 'XXL', hundo: 'Hundo', littleleague: 'Little', greatleague: 'Great', ultraleague: 'Ultra', masterleague: 'Master' }[cat]}
               </button>
             ))}
           </div>

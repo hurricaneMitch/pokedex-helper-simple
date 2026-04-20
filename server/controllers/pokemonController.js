@@ -38,7 +38,8 @@ exports.create = async (req, res) => {
       return res.status(400).json({ message: 'pokemonId, name, and category are required' });
     }
 
-    if (!['shiny', 'regular', 'xxl'].includes(category)) {
+    const VALID_CATEGORIES = ['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague'];
+    if (!VALID_CATEGORIES.includes(category)) {
       return res.status(400).json({ message: 'Invalid category' });
     }
 
@@ -118,9 +119,14 @@ exports.getStats = async (req, res) => {
     ]);
 
     const result = {
-      shiny: 0,
       regular: 0,
-      xxl: 0
+      shiny: 0,
+      xxl: 0,
+      hundo: 0,
+      littleleague: 0,
+      greatleague: 0,
+      ultraleague: 0,
+      masterleague: 0
     };
 
     stats.forEach(stat => {

@@ -20,7 +20,7 @@ const PokemonSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['shiny', 'regular', 'xxl'],
+    enum: ['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague'],
     required: true
   },
   level: {
