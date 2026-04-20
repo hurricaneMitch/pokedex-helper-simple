@@ -25,18 +25,14 @@ export default function PokemonForm({ pokemon, onSave, onCancel }) {
   const [selectedCats, setSelectedCats] = useState(
     isEditing ? [pokemon.category || 'regular'] : []
   );
-  const [level, setLevel]   = useState(isEditing ? (pokemon.level  || '') : '');
-  const [iv, setIv]         = useState(isEditing ? (pokemon.iv     || '') : '');
-  const [notes, setNotes]   = useState(isEditing ? (pokemon.notes  || '') : '');
+  const [notes, setNotes] = useState(isEditing ? (pokemon.notes || '') : '');
   const [error, setError]   = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isEditing) {
       setSelectedCats([pokemon.category || 'regular']);
-      setLevel(pokemon.level  || '');
-      setIv(pokemon.iv        || '');
-      setNotes(pokemon.notes  || '');
+      setNotes(pokemon.notes || '');
     }
   }, [pokemon]);
 
@@ -65,8 +61,6 @@ export default function PokemonForm({ pokemon, onSave, onCancel }) {
       pokemonId: pokemon.pokemonId || pokemon.id,
       name: pokemon.name,
       image: SPRITE_URL(pokemon.name),
-      level: level || null,
-      iv: iv     || null,
       notes: notes || ''
     };
 
@@ -125,31 +119,6 @@ export default function PokemonForm({ pokemon, onSave, onCancel }) {
                   {label}
                 </button>
               ))}
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="level">Level</label>
-              <input
-                id="level"
-                type="number"
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-                min="1" max="50"
-                placeholder="1–50"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="iv">IV Score</label>
-              <input
-                id="iv"
-                type="number"
-                value={iv}
-                onChange={(e) => setIv(e.target.value)}
-                min="0" max="100"
-                placeholder="0–100"
-              />
             </div>
           </div>
 

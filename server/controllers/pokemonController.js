@@ -32,7 +32,7 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const { pokemonId, name, image, category, level, iv, notes } = req.body;
+    const { pokemonId, name, image, category, notes } = req.body;
 
     if (!pokemonId || !name || !category) {
       return res.status(400).json({ message: 'pokemonId, name, and category are required' });
@@ -49,8 +49,6 @@ exports.create = async (req, res) => {
       name,
       image: image || null,
       category,
-      level: level || null,
-      iv: iv || null,
       notes: notes || ''
     });
 
@@ -63,15 +61,13 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const { pokemonId, name, image, category, level, iv, notes } = req.body;
+    const { pokemonId, name, image, category, notes } = req.body;
     const updateData = {};
 
     if (pokemonId !== undefined) updateData.pokemonId = pokemonId;
     if (name !== undefined) updateData.name = name;
     if (image !== undefined) updateData.image = image;
     if (category !== undefined) updateData.category = category;
-    if (level !== undefined) updateData.level = level;
-    if (iv !== undefined) updateData.iv = iv;
     if (notes !== undefined) updateData.notes = notes;
 
     updateData.updatedAt = Date.now();

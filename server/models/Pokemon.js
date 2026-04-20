@@ -23,18 +23,6 @@ const PokemonSchema = new mongoose.Schema({
     enum: ['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague', 'dynamax', 'gigantamax'],
     required: true
   },
-  level: {
-    type: Number,
-    min: 1,
-    max: 50,
-    default: null
-  },
-  iv: {
-    type: Number,
-    min: 0,
-    max: 100,
-    default: null
-  },
   notes: {
     type: String,
     default: ''
