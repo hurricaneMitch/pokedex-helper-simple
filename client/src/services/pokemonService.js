@@ -1,7 +1,8 @@
 import axios from 'axios';
 import authService from './authService';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/pokemon';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_URL = `${BASE_URL}/api/pokemon`;
 
 const getAuthHeader = () => {
   const token = authService.getToken();
