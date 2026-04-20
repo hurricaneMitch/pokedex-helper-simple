@@ -14,6 +14,8 @@ const CATEGORIES = [
   { id: 'greatleague', label: '🥈 Great'       },
   { id: 'ultraleague', label: '🥇 Ultra'       },
   { id: 'masterleague', label: '👑 Master'     },
+  { id: 'dynamax',     label: '⬛ Dynamax'    },
+  { id: 'gigantamax',  label: '🌀 Gigantamax' },
 ];
 
 export default function PokemonForm({ pokemon, onSave, onCancel }) {

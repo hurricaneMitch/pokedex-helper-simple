@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery]     = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [allTracked, setAllTracked]       = useState([]);
-  const [stats, setStats]                 = useState({ regular: 0, shiny: 0, xxl: 0, hundo: 0, littleleague: 0, greatleague: 0, ultraleague: 0, masterleague: 0 });
+  const [stats, setStats]                 = useState({ regular: 0, shiny: 0, xxl: 0, hundo: 0, littleleague: 0, greatleague: 0, ultraleague: 0, masterleague: 0, dynamax: 0, gigantamax: 0 });
   const [refreshKey, setRefreshKey]       = useState(0);
   const navigate = useNavigate();
 
@@ -65,6 +65,8 @@ export default function Dashboard() {
           <span className="hstat greatleague"  title="Great League">G {stats.greatleague}</span>
           <span className="hstat ultraleague"  title="Ultra League">U {stats.ultraleague}</span>
           <span className="hstat masterleague" title="Master League">M {stats.masterleague}</span>
+          <span className="hstat dynamax"      title="Dynamax">D {stats.dynamax}</span>
+          <span className="hstat gigantamax"   title="Gigantamax">GX {stats.gigantamax}</span>
         </div>
         <button onClick={handleLogout} className="logout-btn">Logout</button>
       </header>
@@ -104,13 +106,13 @@ export default function Dashboard() {
       ) : (
         <>
           <div className="tabs">
-            {['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague'].map((cat) => (
+            {['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague', 'dynamax', 'gigantamax'].map((cat) => (
               <button
                 key={cat}
                 className={`tab ${activeTab === cat ? 'active' : ''}`}
                 onClick={() => setActiveTab(cat)}
               >
-                {{ regular: 'Regular', shiny: 'Shiny', xxl: 'XXL', hundo: 'Hundo', littleleague: 'Little', greatleague: 'Great', ultraleague: 'Ultra', masterleague: 'Master' }[cat]}
+                {{ regular: 'Regular', shiny: 'Shiny', xxl: 'XXL', hundo: 'Hundo', littleleague: 'Little', greatleague: 'Great', ultraleague: 'Ultra', masterleague: 'Master', dynamax: 'Dynamax', gigantamax: 'Gigantamax' }[cat]}
               </button>
             ))}
           </div>

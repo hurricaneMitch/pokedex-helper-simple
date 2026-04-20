@@ -69,6 +69,8 @@
 .badge.greatleague  { color: #14b8a6; font-weight: 700; }
 .badge.ultraleague  { color: #8b5cf6; font-weight: 700; }
 .badge.masterleague { color: #b45309; font-weight: 700; }
+.badge.dynamax      { color: #1f2937; font-weight: 700; }
+.badge.gigantamax   { color: #db2777; font-weight: 700; }
 
 .grid-loading,
 .grid-error {

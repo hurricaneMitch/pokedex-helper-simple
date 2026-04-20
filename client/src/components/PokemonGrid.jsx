@@ -77,6 +77,8 @@ export default function PokemonGrid({ trackedPokemon = [], searchQuery = '', onS
                 {categories.includes('greatleague')  && <span className="badge greatleague"  title="Great League">G</span>}
                 {categories.includes('ultraleague')  && <span className="badge ultraleague"  title="Ultra League">U</span>}
                 {categories.includes('masterleague') && <span className="badge masterleague" title="Master League">M</span>}
+                {categories.includes('dynamax')      && <span className="badge dynamax"      title="Dynamax">D</span>}
+                {categories.includes('gigantamax')   && <span className="badge gigantamax"   title="Gigantamax">GX</span>}
               </div>
             )}
           </div>

@@ -125,6 +125,8 @@
 .cat-btn.cat-greatleague.active  { border-color: #14b8a6; color: #14b8a6; background: #f0fdfa; }
 .cat-btn.cat-ultraleague.active  { border-color: #8b5cf6; color: #8b5cf6; background: #f5f3ff; }
 .cat-btn.cat-masterleague.active { border-color: #f59e0b; color: #b45309; background: #fefce8; }
+.cat-btn.cat-dynamax.active      { border-color: #1f2937; color: #1f2937; background: #f1f5f9; }
+.cat-btn.cat-gigantamax.active   { border-color: #db2777; color: #db2777; background: #fdf2f8; }
 
 /* Save button */
 .form-actions { margin-top: 1.5rem; }
