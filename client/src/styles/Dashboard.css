@@ -110,6 +110,80 @@
   color: white;
 }
 
+/* ── Bulk Add controls ── */
+.bulk-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1.5rem;
+  background: #fafafa;
+  border-bottom: 1px solid #e5e5e5;
+  flex-wrap: wrap;
+  transition: background 0.2s;
+}
+
+.bulk-controls.bulk-active {
+  background: #fffbeb;
+  border-bottom-color: #f59e0b;
+}
+
+.bulk-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.bulk-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.bulk-btn {
+  padding: 0.3rem 0.65rem;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #888;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.bulk-btn:hover { border-color: #aaa; color: #555; }
+
+.bulk-btn.bulk-regular.active      { border-color: #22c55e; color: #22c55e; background: #f0fdf4; }
+.bulk-btn.bulk-shiny.active        { border-color: #f59e0b; color: #f59e0b; background: #fffbeb; }
+.bulk-btn.bulk-xxl.active          { border-color: #667eea; color: #667eea; background: #eef2ff; }
+.bulk-btn.bulk-hundo.active        { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+.bulk-btn.bulk-littleleague.active { border-color: #6b7280; color: #6b7280; background: #f9fafb; }
+.bulk-btn.bulk-greatleague.active  { border-color: #14b8a6; color: #14b8a6; background: #f0fdfa; }
+.bulk-btn.bulk-ultraleague.active  { border-color: #8b5cf6; color: #8b5cf6; background: #f5f3ff; }
+.bulk-btn.bulk-masterleague.active { border-color: #f59e0b; color: #b45309; background: #fefce8; }
+.bulk-btn.bulk-dynamax.active      { border-color: #1f2937; color: #1f2937; background: #f1f5f9; }
+.bulk-btn.bulk-gigantamax.active   { border-color: #db2777; color: #db2777; background: #fdf2f8; }
+
+.bulk-exit {
+  margin-left: auto;
+  padding: 0.3rem 0.75rem;
+  border: 1.5px solid #f59e0b;
+  border-radius: 20px;
+  background: white;
+  color: #b45309;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.bulk-exit:hover { background: #fffbeb; }
+
 /* ── Collection tabs ── */
 .tabs {
   display: flex;
