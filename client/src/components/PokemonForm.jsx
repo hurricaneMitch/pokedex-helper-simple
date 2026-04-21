@@ -3,7 +3,7 @@ import pokemonService from '../services/pokemonService';
 import '../styles/PokemonForm.css';
 
 const SPRITE_URL = (name) =>
-  `https://img.pokemondb.net/sprites/home/normal/${name.toLowerCase()}.png`;
+  `https://img.pokemondb.net/sprites/home/normal/${name.toLowerCase().replace(/ \((\w+)\)$/, (_, r) => `-${r.toLowerCase()}`).replace(/\s+/g, '-')}.png`;
 
 const CATEGORIES = [
   { id: 'regular',     label: '● Regular'      },

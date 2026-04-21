@@ -4,7 +4,39 @@ import '../styles/PokemonGrid.css';
 const ICON_URL = (name) =>
   `https://img.pokemondb.net/sprites/sword-shield/icon/${name}.png`;
 
-const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+// Convert PokeAPI regional suffix to pokemondb suffix
+// e.g. vulpix-alola → vulpix-alolan
+const toIconName = (apiName) =>
+  apiName
+    .replace(/-alola$/, '-alolan')
+    .replace(/-galar$/, '-galarian')
+    .replace(/-hisui$/, '-hisuian')
+    .replace(/-paldea$/, '-paldean');
+
+// Nice display name for the card label and panel heading
+// e.g. vulpix-alolan → Vulpix (Alolan)
+const formatDisplayName = (name) => {
+  const regions = [
+    [/-alolan$/, ' (Alolan)'],
+    [/-galarian$/, ' (Galarian)'],
+    [/-hisuian$/, ' (Hisuian)'],
+    [/-paldean$/, ' (Paldean)'],
+  ];
+  for (const [re, label] of regions) {
+    if (re.test(name)) {
+      const base = name.replace(re, '');
+      return base.charAt(0).toUpperCase() + base.slice(1) + label;
+    }
+  }
+  return name.charAt(0).toUpperCase() + name.slice(1);
+};
+
+// Only include base Pokémon + the four regional variants relevant to Pokémon Go
+const isRelevantPokemon = (apiName, id) => {
+  if (id <= 1025) return true;
+  if (id < 10001) return false;
+  return /-(alola|galar|hisui|paldea)(-|$)/.test(apiName);
+};
 
 export default function PokemonGrid({
   trackedPokemon = [],
@@ -24,13 +56,17 @@ export default function PokemonGrid({
 
     const fetchAll = async () => {
       try {
-        const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1010');
+        // 2000 is enough to cover all base Pokémon (1–1025) + regional forms (10001+)
+        const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
         const data = await res.json();
-        const pokemon = data.results.map((p) => {
-          const parts = p.url.split('/').filter(Boolean);
-          const id = parseInt(parts[parts.length - 1], 10);
-          return { id, name: p.name };
-        });
+        const pokemon = data.results
+          .map((p) => {
+            const parts = p.url.split('/').filter(Boolean);
+            const id = parseInt(parts[parts.length - 1], 10);
+            const iconName = toIconName(p.name);
+            return { id, name: iconName, apiName: p.name };
+          })
+          .filter((p) => isRelevantPokemon(p.apiName, p.id));
         setAllPokemon(pokemon);
       } catch {
         setError('Failed to load Pokémon list');
@@ -49,7 +85,10 @@ export default function PokemonGrid({
   }, {});
 
   const filtered = searchQuery.trim()
-    ? allPokemon.filter((p) => p.name.includes(searchQuery.toLowerCase().trim()))
+    ? allPokemon.filter((p) =>
+        p.name.includes(searchQuery.toLowerCase().trim()) ||
+        p.apiName.includes(searchQuery.toLowerCase().trim())
+      )
     : allPokemon;
 
   if (loading) return <div className="grid-loading">Loading Pokédex...</div>;
@@ -60,6 +99,7 @@ export default function PokemonGrid({
       {filtered.map((p) => {
         const categories = trackedByPokedexId[p.id] || [];
         const bulkHas = bulkCategory && categories.includes(bulkCategory);
+        const displayName = formatDisplayName(p.name);
 
         const cardClass = [
           'pokedex-card',
@@ -67,11 +107,13 @@ export default function PokemonGrid({
           bulkCategory ? (bulkHas ? 'bulk-has' : 'bulk-target') : '',
         ].filter(Boolean).join(' ');
 
+        // name passed to callbacks uses the pokemondb format so SPRITE_URL in
+        // PokemonForm can construct the correct image URL via name.toLowerCase()
         const handleClick = () => {
           if (bulkCategory) {
-            onBulkSelect(p.id, capitalize(p.name));
+            onBulkSelect(p.id, displayName);
           } else {
-            onSelect(p.id, capitalize(p.name));
+            onSelect(p.id, displayName);
           }
         };
 
@@ -83,19 +125,19 @@ export default function PokemonGrid({
             title={
               bulkCategory
                 ? bulkHas
-                  ? `${capitalize(p.name)} — tap to remove`
-                  : `${capitalize(p.name)} — tap to add`
-                : capitalize(p.name)
+                  ? `${displayName} — tap to remove`
+                  : `${displayName} — tap to add`
+                : displayName
             }
           >
             {bulkHas && <span className="bulk-check">✓</span>}
             <img
               src={ICON_URL(p.name)}
-              alt={p.name}
+              alt={displayName}
               loading="lazy"
               onError={(e) => { e.target.style.opacity = '0.2'; }}
             />
-            <span className="poke-name">{capitalize(p.name)}</span>
+            <span className="poke-name">{displayName}</span>
             {categories.length > 0 && (
               <div className="tracked-badges">
                 {categories.includes('regular')      && <span className="badge regular"      title="Regular">●</span>}
