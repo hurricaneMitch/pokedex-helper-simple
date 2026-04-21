@@ -72,6 +72,36 @@
 .badge.dynamax      { color: #1f2937; font-weight: 700; }
 .badge.gigantamax   { color: #db2777; font-weight: 700; }
 
+/* ── Bulk Add mode ── */
+.pokedex-grid.bulk-mode { cursor: crosshair; }
+
+.pokedex-card.bulk-target:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+  border-color: #f59e0b;
+}
+
+.pokedex-card.bulk-has {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pokedex-card.bulk-has:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.bulk-check {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 0.65rem;
+  color: #22c55e;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .grid-loading,
 .grid-error {
   text-align: center;
