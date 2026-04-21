@@ -65,14 +65,29 @@ export default function Dashboard() {
     setRefreshKey((k) => k + 1);
   };
 
-  // Optimistically add a single category entry when in bulk mode
+  // Optimistically add or remove a single category entry when in bulk mode
   const handleBulkAdd = useCallback(async (pokemonId, name) => {
-    const alreadyHas = allTracked.some(
+    const existingEntry = allTracked.find(
       (t) => t.pokemonId === pokemonId && t.category === bulkCategory
     );
-    if (alreadyHas) return;
 
-    // Optimistic update
+    if (existingEntry) {
+      // --- Remove ---
+      setAllTracked((prev) => prev.filter((t) => t !== existingEntry));
+      setStats((prev) => ({ ...prev, [bulkCategory]: Math.max(0, prev[bulkCategory] - 1) }));
+      try {
+        if (!String(existingEntry._id).startsWith('temp-')) {
+          await pokemonService.delete(existingEntry._id);
+        }
+      } catch (err) {
+        console.error('Bulk remove failed', err);
+        setAllTracked((prev) => [...prev, existingEntry]);
+        setStats((prev) => ({ ...prev, [bulkCategory]: prev[bulkCategory] + 1 }));
+      }
+      return;
+    }
+
+    // --- Add ---
     const tempEntry = { _id: `temp-${Date.now()}-${pokemonId}`, pokemonId, name, category: bulkCategory };
     setAllTracked((prev) => [...prev, tempEntry]);
     setStats((prev) => ({ ...prev, [bulkCategory]: prev[bulkCategory] + 1 }));
@@ -81,7 +96,6 @@ export default function Dashboard() {
       await pokemonService.create({ pokemonId, name, category: bulkCategory, notes: '' });
     } catch (err) {
       console.error('Bulk add failed', err);
-      // Revert on failure
       setAllTracked((prev) => prev.filter((t) => t !== tempEntry));
       setStats((prev) => ({ ...prev, [bulkCategory]: prev[bulkCategory] - 1 }));
     }

@@ -69,7 +69,7 @@ export default function PokemonGrid({
 
         const handleClick = () => {
           if (bulkCategory) {
-            if (!bulkHas) onBulkSelect(p.id, capitalize(p.name));
+            onBulkSelect(p.id, capitalize(p.name));
           } else {
             onSelect(p.id, capitalize(p.name));
           }
@@ -83,8 +83,8 @@ export default function PokemonGrid({
             title={
               bulkCategory
                 ? bulkHas
-                  ? `${capitalize(p.name)} — already tagged`
-                  : `Click to add ${bulkCategory}`
+                  ? `${capitalize(p.name)} — tap to remove`
+                  : `${capitalize(p.name)} — tap to add`
                 : capitalize(p.name)
             }
           >
