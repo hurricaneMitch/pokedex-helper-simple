@@ -8,7 +8,10 @@ const pokemonRoutes = require('./routes/pokemon');
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  credentials: true
+}));
 
 mongoose.connect(config.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
@@ -26,6 +29,6 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Server error', error: err.message });
 });
 
-app.listen(config.PORT, () => {
+app.listen(config.PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${config.PORT}`);
 });
