@@ -6,7 +6,13 @@ const ICON_URL = (name) =>
 
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-export default function PokemonGrid({ trackedPokemon = [], searchQuery = '', onSelect }) {
+export default function PokemonGrid({
+  trackedPokemon = [],
+  searchQuery = '',
+  onSelect,
+  bulkCategory = null,
+  onBulkSelect,
+}) {
   const [allPokemon, setAllPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -50,16 +56,39 @@ export default function PokemonGrid({ trackedPokemon = [], searchQuery = '', onS
   if (error) return <div className="grid-error">{error}</div>;
 
   return (
-    <div className="pokedex-grid">
+    <div className={`pokedex-grid ${bulkCategory ? 'bulk-mode' : ''}`}>
       {filtered.map((p) => {
         const categories = trackedByPokedexId[p.id] || [];
+        const bulkHas = bulkCategory && categories.includes(bulkCategory);
+
+        const cardClass = [
+          'pokedex-card',
+          categories.length > 0 ? 'tracked' : '',
+          bulkCategory ? (bulkHas ? 'bulk-has' : 'bulk-target') : '',
+        ].filter(Boolean).join(' ');
+
+        const handleClick = () => {
+          if (bulkCategory) {
+            if (!bulkHas) onBulkSelect(p.id, capitalize(p.name));
+          } else {
+            onSelect(p.id, capitalize(p.name));
+          }
+        };
+
         return (
           <div
             key={p.id}
-            className={`pokedex-card ${categories.length > 0 ? 'tracked' : ''}`}
-            onClick={() => onSelect(p.id, capitalize(p.name))}
-            title={capitalize(p.name)}
+            className={cardClass}
+            onClick={handleClick}
+            title={
+              bulkCategory
+                ? bulkHas
+                  ? `${capitalize(p.name)} — already tagged`
+                  : `Click to add ${bulkCategory}`
+                : capitalize(p.name)
+            }
           >
+            {bulkHas && <span className="bulk-check">✓</span>}
             <img
               src={ICON_URL(p.name)}
               alt={p.name}
