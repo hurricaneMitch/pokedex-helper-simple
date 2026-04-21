@@ -38,6 +38,21 @@ const isRelevantPokemon = (apiName, id) => {
   return /-(alola|galar|hisui|paldea)(-|$)/.test(apiName);
 };
 
+// Strip regional suffix to get the base Pokémon's API name
+// e.g. vulpix-alola → vulpix, tauros-paldea-combat → tauros
+const getBaseName = (apiName) =>
+  apiName.replace(/-(alola|galar|hisui|paldea)(-.*)?$/, '');
+
+// Regional forms sort directly after their base Pokémon.
+// Base Pokémon use their own ID; forms use baseId + 0.5 so they slot
+// in right after the base. Secondary sort by id handles multiple forms
+// of the same base (e.g. three Paldean Tauros variants).
+const sortKey = (p, baseIdMap) => {
+  if (p.id <= 1025) return p.id;
+  const baseId = baseIdMap[getBaseName(p.apiName)];
+  return baseId !== undefined ? baseId + 0.5 : 9999;
+};
+
 export default function PokemonGrid({
   trackedPokemon = [],
   searchQuery = '',
@@ -67,7 +82,17 @@ export default function PokemonGrid({
             return { id, name: iconName, apiName: p.name };
           })
           .filter((p) => isRelevantPokemon(p.apiName, p.id));
-        setAllPokemon(pokemon);
+
+        // Build name→id map from base Pokémon so forms can find their sort position
+        const baseIdMap = {};
+        pokemon.forEach((p) => { if (p.id <= 1025) baseIdMap[p.apiName] = p.id; });
+
+        const sorted = [...pokemon].sort((a, b) => {
+          const diff = sortKey(a, baseIdMap) - sortKey(b, baseIdMap);
+          return diff !== 0 ? diff : a.id - b.id; // tie-break: lower id first
+        });
+
+        setAllPokemon(sorted);
       } catch {
         setError('Failed to load Pokémon list');
       } finally {
