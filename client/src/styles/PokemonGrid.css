@@ -82,14 +82,14 @@
 }
 
 .pokedex-card.bulk-has {
-  opacity: 0.45;
-  cursor: default;
+  opacity: 0.5;
 }
 
 .pokedex-card.bulk-has:hover {
-  transform: none;
-  box-shadow: none;
-  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+  opacity: 1;
 }
 
 .bulk-check {
