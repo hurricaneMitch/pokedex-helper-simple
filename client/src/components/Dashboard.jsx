@@ -100,7 +100,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Pokémon Go Tracker</h1>
+        <h1>Pokedex Tracker</h1>
         <div className="header-stats">
           <span className="hstat regular"      title="Regular">● {stats.regular}</span>
           <span className="hstat shiny"        title="Shiny">★ {stats.shiny}</span>
