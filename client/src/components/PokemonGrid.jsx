@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import '../styles/PokemonGrid.css';
 
 const ICON_URL = (name) =>
-  `https://img.pokemondb.net/sprites/sword-shield/icon/${name}.png`;
+  `https://img.pokemondb.net/sprites/scarlet-violet/icon/${name}.png`;
 
 // Convert PokeAPI regional suffix to pokemondb suffix
 // e.g. vulpix-alola → vulpix-alolan
