@@ -39,14 +39,13 @@ const extractBaseName = (displayName) =>
   displayName.replace(/ \(.*\)$/, '').toLowerCase();
 
 export default function QueryPage({ allTracked = [] }) {
-  const [queryType,       setQueryType]       = useState('missing');
-  const [selectedCats,    setSelectedCats]    = useState(new Set(['shiny']));
-  const [regionIdx,       setRegionIdx]       = useState(0);
-  const [includeRegional, setIncludeRegional] = useState(false);
-  const [copied,          setCopied]          = useState(false);
-  const [savedQueries,    setSavedQueries]    = useState(loadSaved);
-  const [saveName,        setSaveName]        = useState('');
-  const [showSaveInput,   setShowSaveInput]   = useState(false);
+  const [queryType,     setQueryType]     = useState('missing');
+  const [selectedCats,  setSelectedCats]  = useState(new Set(['shiny']));
+  const [regionIdx,     setRegionIdx]     = useState(0);
+  const [copied,        setCopied]        = useState(false);
+  const [savedQueries,  setSavedQueries]  = useState(loadSaved);
+  const [saveName,      setSaveName]      = useState('');
+  const [showSaveInput, setShowSaveInput] = useState(false);
 
   // ── Category toggle — always keep at least one selected ──
   const toggleCat = (catId) => {
@@ -72,7 +71,7 @@ export default function QueryPage({ allTracked = [] }) {
       .filter(t => t.pokemonId >= 1 && t.pokemonId <= 1025)
       .forEach(t => { nameToBaseId[t.name.toLowerCase()] = t.pokemonId; });
 
-    // Build a tracked-ID Set per selected category
+    // Build a tracked-ID Set per selected category (regional forms always included)
     const catSets = {};
     for (const catId of selectedCats) {
       const ids = new Set();
@@ -81,7 +80,7 @@ export default function QueryPage({ allTracked = [] }) {
         .forEach(t => {
           if (t.pokemonId >= 1 && t.pokemonId <= 1025) {
             ids.add(t.pokemonId);
-          } else if (includeRegional) {
+          } else {
             // Resolve regional form → base ID via display name
             const baseId = nameToBaseId[extractBaseName(t.name)];
             if (baseId !== undefined) ids.add(baseId);
@@ -99,7 +98,7 @@ export default function QueryPage({ allTracked = [] }) {
       if (queryType === 'missing' && missingAny) result.push(i);
     }
     return result;
-  }, [allTracked, queryType, selectedCats, regionIdx, includeRegional]);
+  }, [allTracked, queryType, selectedCats, regionIdx]);
 
   const searchString = resultIds.join(',');
   const { min, max } = REGIONS[regionIdx];
@@ -126,7 +125,6 @@ export default function QueryPage({ allTracked = [] }) {
       queryType,
       categories: [...selectedCats],
       regionIdx,
-      includeRegional,
     }]);
     setSaveName('');
     setShowSaveInput(false);
@@ -136,7 +134,6 @@ export default function QueryPage({ allTracked = [] }) {
     setQueryType(q.queryType);
     setSelectedCats(new Set(q.categories));
     setRegionIdx(q.regionIdx);
-    setIncludeRegional(q.includeRegional ?? false);
   };
 
   const handleDeleteSaved = (id) =>
@@ -204,24 +201,6 @@ export default function QueryPage({ allTracked = [] }) {
             ))}
           </div>
           <span className="gen-range-hint">{min}–{max} ({rangeSize} Pokémon)</span>
-        </div>
-
-        {/* ── Regional forms ── */}
-        <div className="query-section query-section-inline">
-          <label className="query-label">Regional forms</label>
-          <div className="query-toggle">
-            <button className={!includeRegional ? 'active' : ''} onClick={() => setIncludeRegional(false)}>
-              Exclude
-            </button>
-            <button className={includeRegional ? 'active' : ''} onClick={() => setIncludeRegional(true)}>
-              Include
-            </button>
-          </div>
-          <span className="regional-hint">
-            {includeRegional
-              ? 'Alolan / Galarian / Hisuian / Paldean forms count toward their base Pokémon'
-              : 'Only base-form entries are counted'}
-          </span>
         </div>
 
         {/* ── Result ── */}
