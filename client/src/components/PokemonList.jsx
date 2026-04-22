@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import pokemonService from '../services/pokemonService';
 import '../styles/PokemonList.css';
 
+
 const CATEGORIES = [
   { id: 'regular',      symbol: '●',  label: 'Regular'    },
   { id: 'shiny',        symbol: '★',  label: 'Shiny'      },
@@ -45,47 +46,6 @@ export default function PokemonList({ onEdit, onSave, refreshKey, searchQuery = 
   }, []);
 
   useEffect(() => { fetchAll(); }, [refreshKey, fetchAll]);
-
-  const handleToggle = async (row, catId) => {
-    const existingId = row.entries[catId];
-
-    if (existingId) {
-      // Remove — optimistic
-      setRows((prev) =>
-        prev
-          .map((r) => {
-            if (r.pokemonId !== row.pokemonId) return r;
-            const entries = { ...r.entries };
-            delete entries[catId];
-            return { ...r, entries };
-          })
-          .filter((r) => Object.keys(r.entries).length > 0)
-      );
-      try {
-        await pokemonService.delete(existingId);
-        onSave?.();
-      } catch {
-        fetchAll();
-      }
-    } else {
-      // Add — optimistic
-      const tempId = `temp-${Date.now()}`;
-      setRows((prev) =>
-        prev.map((r) =>
-          r.pokemonId === row.pokemonId
-            ? { ...r, entries: { ...r.entries, [catId]: tempId } }
-            : r
-        )
-      );
-      try {
-        await pokemonService.create({ pokemonId: row.pokemonId, name: row.name, category: catId, notes: '' });
-        onSave?.();
-        fetchAll();
-      } catch {
-        fetchAll();
-      }
-    }
-  };
 
   const handleDeleteAll = async (row) => {
     if (!window.confirm(`Remove all tags for ${row.name}?`)) return;
@@ -133,8 +93,7 @@ export default function PokemonList({ onEdit, onSave, refreshKey, searchQuery = 
                   <td
                     key={cat.id}
                     className={`col-cat col-${cat.id} ${has ? 'has-tag' : 'no-tag'}`}
-                    onClick={() => handleToggle(row, cat.id)}
-                    title={has ? `Remove ${cat.label}` : `Add ${cat.label}`}
+                    title={cat.label}
                   >
                     {has ? '✓' : ''}
                   </td>

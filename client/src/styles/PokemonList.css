@@ -42,15 +42,12 @@
   padding-left: 1rem !important;
 }
 
-/* Category toggle cells */
+/* Category cells — read-only */
 .col-cat {
-  cursor: pointer;
   width: 42px;
-  transition: background 0.1s;
 }
 
-.col-cat.no-tag { color: #ddd; }
-.col-cat.no-tag:hover { background: #f5f3ff; color: #aaa; }
+.col-cat.no-tag { color: #e5e5e5; }
 
 .col-cat.has-tag { font-weight: 700; font-size: 1rem; }
 
@@ -64,8 +61,6 @@
 .col-masterleague.has-tag { color: #b45309; }
 .col-dynamax.has-tag      { color: #1f2937; }
 .col-gigantamax.has-tag   { color: #db2777; }
-
-.col-cat.has-tag:hover { opacity: 0.5; }
 
 /* Action columns */
 .col-action {
