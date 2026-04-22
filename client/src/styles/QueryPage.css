@@ -1,0 +1,173 @@
+.query-page {
+  padding: 2rem 1.5rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.query-card {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.query-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.query-subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0 0 1.75rem;
+  line-height: 1.5;
+}
+
+/* ── Section ── */
+.query-section {
+  margin-bottom: 1.5rem;
+}
+
+.query-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin-bottom: 0.6rem;
+}
+
+/* ── Have / Missing toggle ── */
+.query-toggle {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.query-toggle button {
+  padding: 0.55rem 1.4rem;
+  border: none;
+  background: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #666;
+  transition: background 0.15s, color 0.15s;
+}
+
+.query-toggle button:first-child { border-right: 1px solid #ddd; }
+.query-toggle button.active { background: #667eea; color: white; }
+
+/* ── Category buttons ── */
+.cat-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.cat-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #888;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.cat-btn:hover { border-color: #aaa; color: #555; }
+.cat-btn.active { border-color: #667eea; color: #667eea; background: #eef2ff; }
+
+/* ── Generation buttons ── */
+.gen-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.gen-buttons button {
+  padding: 0.4rem 0.75rem;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #888;
+  transition: all 0.15s;
+}
+
+.gen-buttons button:hover { border-color: #aaa; color: #555; }
+.gen-buttons button.active { border-color: #667eea; color: #667eea; background: #eef2ff; }
+
+.gen-range-hint {
+  font-size: 0.78rem;
+  color: #aaa;
+}
+
+/* ── Result ── */
+.query-result {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.result-count {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.copy-btn {
+  padding: 0.45rem 1rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.copy-btn:hover   { background: #5568d3; }
+.copy-btn.copied  { background: #22c55e; }
+
+.result-empty {
+  color: #888;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.result-string {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: #333;
+  background: #fafafa;
+  resize: none;
+  box-sizing: border-box;
+  cursor: text;
+  line-height: 1.6;
+}
+
+.result-string:focus { outline: none; border-color: #667eea; }
