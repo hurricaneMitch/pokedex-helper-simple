@@ -51,7 +51,13 @@ export default function PokemonList({ onEdit, onSave, refreshKey, searchQuery = 
 
   const handleSort = (col) => {
     if (sortCol === col) {
-      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+      if (sortDir === 'asc') {
+        setSortDir('desc');
+      } else {
+        // Third click — clear sort, back to Pokédex order
+        setSortCol(null);
+        setSortDir('asc');
+      }
     } else {
       setSortCol(col);
       setSortDir('asc');
