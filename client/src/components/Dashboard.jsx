@@ -22,7 +22,6 @@ const CATEGORIES = [
 
 export default function Dashboard() {
   const [viewMode, setViewMode]               = useState('grid');
-  const [activeTab, setActiveTab]             = useState('regular');
   const [searchQuery, setSearchQuery]         = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [allTracked, setAllTracked]           = useState([]);
@@ -137,7 +136,7 @@ export default function Dashboard() {
             placeholder="Search Pokémon..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            disabled={viewMode === 'collection'}
+            disabled={false}
           />
         </div>
         <div className="view-toggle">
@@ -187,24 +186,12 @@ export default function Dashboard() {
           onBulkSelect={handleBulkAdd}
         />
       ) : (
-        <>
-          <div className="tabs">
-            {['regular', 'shiny', 'xxl', 'hundo', 'littleleague', 'greatleague', 'ultraleague', 'masterleague', 'dynamax', 'gigantamax'].map((cat) => (
-              <button
-                key={cat}
-                className={`tab ${activeTab === cat ? 'active' : ''}`}
-                onClick={() => setActiveTab(cat)}
-              >
-                {{ regular: 'Regular', shiny: 'Shiny', xxl: 'XXL', hundo: 'Hundo', littleleague: 'Little', greatleague: 'Great', ultraleague: 'Ultra', masterleague: 'Master', dynamax: 'Dynamax', gigantamax: 'Gigantamax' }[cat]}
-              </button>
-            ))}
-          </div>
-          <PokemonList
-            category={activeTab}
-            onEdit={handleEditPokemon}
-            refreshKey={refreshKey}
-          />
-        </>
+        <PokemonList
+          onEdit={handleEditPokemon}
+          onSave={handleSave}
+          refreshKey={refreshKey}
+          searchQuery={searchQuery}
+        />
       )}
 
       {selectedPokemon && (
