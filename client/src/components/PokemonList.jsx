@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import pokemonService from '../services/pokemonService';
 import '../styles/PokemonList.css';
 
-
 const CATEGORIES = [
   { id: 'regular',      symbol: '●',  label: 'Regular'    },
   { id: 'shiny',        symbol: '★',  label: 'Shiny'      },
@@ -16,17 +15,20 @@ const CATEGORIES = [
   { id: 'gigantamax',   symbol: '🌀', label: 'Gigantamax' },
 ];
 
+const INDICATOR = { asc: ' ▲', desc: ' ▼' };
+
 export default function PokemonList({ onEdit, onSave, refreshKey, searchQuery = '' }) {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows]       = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError]     = useState('');
+  const [sortCol, setSortCol] = useState(null);   // null = Pokédex #
+  const [sortDir, setSortDir] = useState('asc');
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
       const data = await pokemonService.getAll();
-      // Group entries by pokemonId
       const grouped = {};
       data.forEach((entry) => {
         const key = entry.pokemonId;
@@ -35,7 +37,7 @@ export default function PokemonList({ onEdit, onSave, refreshKey, searchQuery = 
         }
         grouped[key].entries[entry.category] = entry._id;
       });
-      // Sort by Pokédex number
+      // Base order is always Pokédex number; sorting is applied at render time
       const sorted = Object.values(grouped).sort((a, b) => a.pokemonId - b.pokemonId);
       setRows(sorted);
     } catch {
@@ -46,6 +48,15 @@ export default function PokemonList({ onEdit, onSave, refreshKey, searchQuery = 
   }, []);
 
   useEffect(() => { fetchAll(); }, [refreshKey, fetchAll]);
+
+  const handleSort = (col) => {
+    if (sortCol === col) {
+      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortCol(col);
+      setSortDir('asc');
+    }
+  };
 
   const handleDeleteAll = async (row) => {
     if (!window.confirm(`Remove all tags for ${row.name}?`)) return;
@@ -63,28 +74,55 @@ export default function PokemonList({ onEdit, onSave, refreshKey, searchQuery = 
     ? rows.filter((r) => r.name.toLowerCase().includes(searchQuery.toLowerCase().trim()))
     : rows;
 
+  // Apply sort; secondary sort is always Pokédex number ascending
+  const displayed = [...filtered].sort((a, b) => {
+    const secondary = a.pokemonId - b.pokemonId;
+    if (!sortCol) return secondary;
+
+    let primary;
+    if (sortCol === 'name') {
+      primary = a.name.localeCompare(b.name);
+    } else {
+      // Category column: asc = has tag first (1 before 0)
+      const aVal = a.entries[sortCol] ? 1 : 0;
+      const bVal = b.entries[sortCol] ? 1 : 0;
+      primary = bVal - aVal;
+    }
+
+    if (sortDir === 'desc') primary = -primary;
+    return primary !== 0 ? primary : secondary;
+  });
+
   if (loading) return <div className="loading">Loading...</div>;
   if (error)   return <div className="error-message">{error}</div>;
   if (rows.length === 0) return <p className="empty-message">No Pokémon in your collection yet — add some from the All Pokémon view!</p>;
-  if (filtered.length === 0) return <p className="empty-message">No Pokémon match your search.</p>;
+  if (displayed.length === 0) return <p className="empty-message">No Pokémon match your search.</p>;
+
+  const sortTh = (col, children, className) => (
+    <th
+      className={`${className} sortable${sortCol === col ? ' sorted' : ''}`}
+      onClick={() => handleSort(col)}
+      title={`Sort by ${col}`}
+    >
+      {children}{sortCol === col ? INDICATOR[sortDir] : ''}
+    </th>
+  );
 
   return (
     <div className="collection-wrap">
       <table className="collection-table">
         <thead>
           <tr>
-            <th className="col-name">Pokémon</th>
-            {CATEGORIES.map((cat) => (
-              <th key={cat.id} className={`col-cat col-${cat.id}`} title={cat.label}>
-                {cat.symbol}
-              </th>
-            ))}
+            {sortTh('name', 'Pokémon', 'col-name')}
+            {CATEGORIES.map((cat) =>
+              sortTh(cat.id, cat.symbol, `col-cat col-${cat.id}`)
+            )}
             <th className="col-action"></th>
             <th className="col-action"></th>
           </tr>
         </thead>
         <tbody>
-          {filtered.map((row) => (
+          {displayed.map((row) => (
             <tr key={row.pokemonId}>
               <td className="col-name">{row.name}</td>
               {CATEGORIES.map((cat) => {

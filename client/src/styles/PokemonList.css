@@ -30,6 +30,14 @@
   top: 0;
 }
 
+.collection-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.collection-table th.sortable:hover { background: #ede9fe; color: #4c3d9e; }
+.collection-table th.sorted         { background: #ede9fe; color: #4c3d9e; }
+
 .collection-table tbody tr:last-child td { border-bottom: none; }
 .collection-table tbody tr:hover { background: #fafafa; }
 
