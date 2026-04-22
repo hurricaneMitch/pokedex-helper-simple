@@ -5,6 +5,7 @@ import pokemonService from '../services/pokemonService';
 import PokemonGrid from './PokemonGrid';
 import PokemonForm from './PokemonForm';
 import PokemonList from './PokemonList';
+import QueryPage from './QueryPage';
 import '../styles/Dashboard.css';
 
 const CATEGORIES = [
@@ -152,11 +153,18 @@ export default function Dashboard() {
           >
             My Collection
           </button>
+          <button
+            className={viewMode === 'query' ? 'active' : ''}
+            onClick={() => handleViewModeChange('query')}
+          >
+            Query
+          </button>
         </div>
       </div>
 
       {viewMode === 'grid' && (
         <div className={`bulk-controls ${bulkCategory ? 'bulk-active' : ''}`}>
+
           <span className="bulk-label">Bulk Add:</span>
           <div className="bulk-buttons">
             {CATEGORIES.map((cat) => (
@@ -185,13 +193,15 @@ export default function Dashboard() {
           bulkCategory={bulkCategory}
           onBulkSelect={handleBulkAdd}
         />
-      ) : (
+      ) : viewMode === 'collection' ? (
         <PokemonList
           onEdit={handleEditPokemon}
           onSave={handleSave}
           refreshKey={refreshKey}
           searchQuery={searchQuery}
         />
+      ) : (
+        <QueryPage allTracked={allTracked} />
       )}
 
       {selectedPokemon && (
