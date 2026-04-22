@@ -14,27 +14,27 @@ const CATEGORIES = [
   { id: 'gigantamax',   label: '🌀 Gigantamax' },
 ];
 
-const GENS = [
-  { label: 'All',   min: 1,   max: 1025 },
-  { label: 'Gen 1', min: 1,   max: 151  },
-  { label: 'Gen 2', min: 152, max: 251  },
-  { label: 'Gen 3', min: 252, max: 386  },
-  { label: 'Gen 4', min: 387, max: 493  },
-  { label: 'Gen 5', min: 494, max: 649  },
-  { label: 'Gen 6', min: 650, max: 721  },
-  { label: 'Gen 7', min: 722, max: 809  },
-  { label: 'Gen 8', min: 810, max: 905  },
-  { label: 'Gen 9', min: 906, max: 1025 },
+const REGIONS = [
+  { label: 'All',    min: 1,   max: 1025 },
+  { label: 'Kanto',  min: 1,   max: 151  },
+  { label: 'Johto',  min: 152, max: 251  },
+  { label: 'Hoenn',  min: 252, max: 386  },
+  { label: 'Sinnoh', min: 387, max: 493  },
+  { label: 'Unova',  min: 494, max: 649  },
+  { label: 'Kalos',  min: 650, max: 721  },
+  { label: 'Alola',  min: 722, max: 809  },
+  { label: 'Galar',  min: 810, max: 905  },
+  { label: 'Paldea', min: 906, max: 1025 },
 ];
 
 export default function QueryPage({ allTracked = [] }) {
   const [queryType, setQueryType] = useState('missing');
   const [category,  setCategory]  = useState('shiny');
-  const [genIdx,    setGenIdx]    = useState(0);
+  const [regionIdx, setRegionIdx] = useState(0);
   const [copied,    setCopied]    = useState(false);
 
   const resultIds = useMemo(() => {
-    const { min, max } = GENS[genIdx];
+    const { min, max } = REGIONS[regionIdx];
 
     // Set of base Pokédex IDs (1–1025) the user has for this category
     const trackedIds = new Set(
@@ -50,7 +50,7 @@ export default function QueryPage({ allTracked = [] }) {
       if (queryType === 'have'    &&  has) ids.push(i);
     }
     return ids;
-  }, [allTracked, queryType, category, genIdx]);
+  }, [allTracked, queryType, category, regionIdx]);
 
   const searchString = resultIds.map(id => `${id}`).join(',');
 
@@ -60,7 +60,7 @@ export default function QueryPage({ allTracked = [] }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const { min, max } = GENS[genIdx];
+  const { min, max } = REGIONS[regionIdx];
   const rangeSize = max - min + 1;
 
   return (
@@ -107,21 +107,21 @@ export default function QueryPage({ allTracked = [] }) {
           </div>
         </div>
 
-        {/* Generation range */}
+        {/* Region */}
         <div className="query-section">
-          <label className="query-label">Generation</label>
+          <label className="query-label">Region</label>
           <div className="gen-buttons">
-            {GENS.map((g, i) => (
+            {REGIONS.map((r, i) => (
               <button
-                key={g.label}
-                className={genIdx === i ? 'active' : ''}
-                onClick={() => setGenIdx(i)}
+                key={r.label}
+                className={regionIdx === i ? 'active' : ''}
+                onClick={() => setRegionIdx(i)}
               >
-                {g.label}
+                {r.label}
               </button>
             ))}
           </div>
-          <span className="gen-range-hint">#{min}–#{max} ({rangeSize} Pokémon)</span>
+          <span className="gen-range-hint">{min}–{max} ({rangeSize} Pokémon)</span>
         </div>
 
         {/* Result */}
