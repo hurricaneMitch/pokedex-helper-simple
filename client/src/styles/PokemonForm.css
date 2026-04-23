@@ -1,7 +1,7 @@
 .panel-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: flex-end;
   align-items: stretch;
@@ -9,12 +9,12 @@
 }
 
 .category-panel {
-  background: white;
+  background: var(--bg-surface);
   width: 100%;
   max-width: 360px;
   padding: 2rem 1.5rem;
   overflow-y: auto;
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.3);
   position: relative;
   animation: slideIn 0.2s ease-out;
 }
@@ -31,13 +31,13 @@
   background: none;
   border: none;
   font-size: 1.6rem;
-  color: #999;
+  color: var(--text-xfaint);
   cursor: pointer;
   line-height: 1;
   padding: 0 4px;
 }
 
-.panel-close:hover { color: #333; }
+.panel-close:hover { color: var(--text-primary); }
 
 .panel-pokemon {
   text-align: center;
@@ -54,7 +54,7 @@
 .panel-pokemon h2 {
   margin: 0.5rem 0 0;
   font-size: 1.4rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .form-group {
@@ -64,7 +64,7 @@
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #555;
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 0.9rem;
 }
@@ -73,18 +73,20 @@
 .form-group textarea {
   width: 100%;
   padding: 0.65rem 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-input);
   border-radius: 6px;
   font-size: 0.95rem;
   box-sizing: border-box;
   font-family: inherit;
+  background: var(--bg-surface);
+  color: var(--text-primary);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
 }
 
 .form-group textarea { resize: vertical; }
@@ -104,29 +106,40 @@
 
 .cat-btn {
   padding: 0.6rem 0.4rem;
-  border: 2px solid #ddd;
+  border: 2px solid var(--border-input);
   border-radius: 6px;
-  background: white;
+  background: var(--bg-surface);
   cursor: pointer;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #888;
+  color: var(--text-faint);
   transition: all 0.15s;
   text-align: center;
 }
 
-.cat-btn:hover { border-color: #aaa; color: #555; }
+.cat-btn:hover { border-color: var(--text-xfaint); color: var(--text-secondary); }
 
 .cat-btn.cat-regular.active      { border-color: #22c55e; color: #22c55e; background: #f0fdf4; }
 .cat-btn.cat-shiny.active        { border-color: #f59e0b; color: #f59e0b; background: #fffbeb; }
-.cat-btn.cat-xxl.active          { border-color: #667eea; color: #667eea; background: #eef2ff; }
+.cat-btn.cat-xxl.active          { border-color: #667eea; color: #667eea; background: var(--accent-bg); }
 .cat-btn.cat-hundo.active        { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
 .cat-btn.cat-littleleague.active { border-color: #6b7280; color: #6b7280; background: #f9fafb; }
 .cat-btn.cat-greatleague.active  { border-color: #14b8a6; color: #14b8a6; background: #f0fdfa; }
 .cat-btn.cat-ultraleague.active  { border-color: #8b5cf6; color: #8b5cf6; background: #f5f3ff; }
 .cat-btn.cat-masterleague.active { border-color: #f59e0b; color: #b45309; background: #fefce8; }
-.cat-btn.cat-dynamax.active      { border-color: #1f2937; color: #1f2937; background: #f1f5f9; }
+.cat-btn.cat-dynamax.active      { border-color: #94a3b8; color: #94a3b8; background: #f1f5f9; }
 .cat-btn.cat-gigantamax.active   { border-color: #db2777; color: #db2777; background: #fdf2f8; }
+
+[data-theme="dark"] .cat-btn.cat-regular.active      { background: #0a2010; }
+[data-theme="dark"] .cat-btn.cat-shiny.active        { background: #2a1e08; }
+[data-theme="dark"] .cat-btn.cat-xxl.active          { background: var(--accent-bg); }
+[data-theme="dark"] .cat-btn.cat-hundo.active        { background: #2a0a0a; }
+[data-theme="dark"] .cat-btn.cat-littleleague.active { background: #1a1e22; }
+[data-theme="dark"] .cat-btn.cat-greatleague.active  { background: #0a2022; }
+[data-theme="dark"] .cat-btn.cat-ultraleague.active  { background: #1a1030; }
+[data-theme="dark"] .cat-btn.cat-masterleague.active { background: #2a1e08; }
+[data-theme="dark"] .cat-btn.cat-dynamax.active      { background: #1a2030; }
+[data-theme="dark"] .cat-btn.cat-gigantamax.active   { background: #2a0818; }
 
 /* Save button */
 .form-actions { margin-top: 1.5rem; }
@@ -134,7 +147,7 @@
 .save-btn {
   width: 100%;
   padding: 0.85rem;
-  background: #667eea;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -144,7 +157,7 @@
   transition: background 0.2s;
 }
 
-.save-btn:hover:not(:disabled) { background: #5568d3; }
+.save-btn:hover:not(:disabled) { background: var(--accent-hover); }
 .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .error-message {

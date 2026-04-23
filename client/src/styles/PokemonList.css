@@ -6,26 +6,26 @@
 .collection-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  background: var(--bg-surface);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px var(--shadow-card);
   font-size: 0.9rem;
 }
 
 .collection-table th,
 .collection-table td {
   padding: 0.55rem 0.6rem;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-light);
   text-align: center;
   white-space: nowrap;
 }
 
 .collection-table th {
-  background: #f8f7ff;
+  background: var(--bg-surface-2);
   font-weight: 700;
   font-size: 0.82rem;
-  color: #555;
+  color: var(--text-secondary);
   position: sticky;
   top: 0;
 }
@@ -38,14 +38,17 @@
 .collection-table th.sortable:hover { background: #ede9fe; color: #4c3d9e; }
 .collection-table th.sorted         { background: #ede9fe; color: #4c3d9e; }
 
+[data-theme="dark"] .collection-table th.sortable:hover { background: #2a2450; color: #a89cf0; }
+[data-theme="dark"] .collection-table th.sorted         { background: #2a2450; color: #a89cf0; }
+
 .collection-table tbody tr:last-child td { border-bottom: none; }
-.collection-table tbody tr:hover { background: #fafafa; }
+.collection-table tbody tr:hover { background: var(--bg-surface-2); }
 
 /* Pokémon name column */
 .col-name {
   text-align: left !important;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   min-width: 130px;
   padding-left: 1rem !important;
 }
@@ -55,7 +58,7 @@
   width: 42px;
 }
 
-.col-cat.no-tag { color: #e5e5e5; }
+.col-cat.no-tag { color: var(--border); }
 
 .col-cat.has-tag { font-weight: 700; font-size: 1rem; }
 
@@ -67,7 +70,7 @@
 .col-greatleague.has-tag  { color: #14b8a6; }
 .col-ultraleague.has-tag  { color: #8b5cf6; }
 .col-masterleague.has-tag { color: #b45309; }
-.col-dynamax.has-tag      { color: #1f2937; }
+.col-dynamax.has-tag      { color: #94a3b8; }
 .col-gigantamax.has-tag   { color: #db2777; }
 
 /* Action columns */
@@ -88,13 +91,13 @@
   transition: background 0.15s;
 }
 
-.tbl-edit-btn:hover   { background: #eef2ff; }
+.tbl-edit-btn:hover   { background: var(--accent-bg); }
 .tbl-delete-btn:hover { background: #fee; }
 
 /* Empty / loading states */
 .empty-message {
   text-align: center;
-  color: #999;
+  color: var(--text-xfaint);
   padding: 3rem 2rem;
   font-size: 1rem;
 }

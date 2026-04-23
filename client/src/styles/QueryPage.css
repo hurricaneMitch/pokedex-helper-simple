@@ -5,20 +5,20 @@
 }
 
 .query-card {
-  background: white;
+  background: var(--bg-surface);
   border-radius: 10px;
   padding: 2rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px var(--shadow-card);
 }
 
 .query-card h2 {
   margin: 0 0 0.35rem;
   font-size: 1.4rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .query-subtitle {
-  color: #888;
+  color: var(--text-faint);
   font-size: 0.9rem;
   margin: 0 0 1.75rem;
   line-height: 1.5;
@@ -35,7 +35,7 @@
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #888;
+  color: var(--text-faint);
   margin-bottom: 0.6rem;
 }
 
@@ -44,14 +44,14 @@
   font-size: 0.78rem;
   text-transform: none;
   letter-spacing: 0;
-  color: #bbb;
+  color: var(--text-xfaint);
   margin-left: 0.4rem;
 }
 
 /* ── Have / Missing toggle ── */
 .query-toggle {
   display: flex;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-input);
   border-radius: 6px;
   overflow: hidden;
   width: fit-content;
@@ -60,16 +60,16 @@
 .query-toggle button {
   padding: 0.55rem 1.4rem;
   border: none;
-  background: white;
+  background: var(--bg-surface);
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #666;
+  color: var(--text-muted);
   transition: background 0.15s, color 0.15s;
 }
 
-.query-toggle button:first-child { border-right: 1px solid #ddd; }
-.query-toggle button.active { background: #667eea; color: white; }
+.query-toggle button:first-child { border-right: 1px solid var(--border-input); }
+.query-toggle button.active { background: var(--accent); color: white; }
 
 /* ── Category buttons ── */
 .cat-buttons {
@@ -80,19 +80,19 @@
 
 .cat-btn {
   padding: 0.4rem 0.75rem;
-  border: 1.5px solid #ddd;
+  border: 1.5px solid var(--border-input);
   border-radius: 20px;
-  background: white;
+  background: var(--bg-surface);
   cursor: pointer;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #888;
+  color: var(--text-faint);
   transition: all 0.15s;
   white-space: nowrap;
 }
 
-.cat-btn:hover  { border-color: #aaa; color: #555; }
-.cat-btn.active { border-color: #667eea; color: #667eea; background: #eef2ff; }
+.cat-btn:hover  { border-color: var(--text-xfaint); color: var(--text-secondary); }
+.cat-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
 
 /* ── Generation / Region buttons ── */
 .gen-buttons {
@@ -104,27 +104,27 @@
 
 .gen-buttons button {
   padding: 0.4rem 0.75rem;
-  border: 1.5px solid #ddd;
+  border: 1.5px solid var(--border-input);
   border-radius: 6px;
-  background: white;
+  background: var(--bg-surface);
   cursor: pointer;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #888;
+  color: var(--text-faint);
   transition: all 0.15s;
 }
 
-.gen-buttons button:hover  { border-color: #aaa; color: #555; }
-.gen-buttons button.active { border-color: #667eea; color: #667eea; background: #eef2ff; }
+.gen-buttons button:hover  { border-color: var(--text-xfaint); color: var(--text-secondary); }
+.gen-buttons button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
 
 .gen-range-hint {
   font-size: 0.78rem;
-  color: #aaa;
+  color: var(--text-xfaint);
 }
 
 /* ── Result ── */
 .query-result {
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border-light);
   padding-top: 1.25rem;
   margin-top: 0.5rem;
 }
@@ -141,7 +141,7 @@
 .result-count {
   font-size: 1rem;
   font-weight: 700;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .result-actions {
@@ -152,7 +152,7 @@
 
 .copy-btn {
   padding: 0.45rem 1rem;
-  background: #667eea;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -163,23 +163,23 @@
   white-space: nowrap;
 }
 
-.copy-btn:hover  { background: #5568d3; }
+.copy-btn:hover  { background: var(--accent-hover); }
 .copy-btn.copied { background: #22c55e; }
 
 .save-query-btn {
   padding: 0.45rem 0.9rem;
-  background: white;
-  color: #667eea;
-  border: 1.5px solid #667eea;
+  background: var(--bg-surface);
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.88rem;
   font-weight: 600;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s;
   white-space: nowrap;
 }
 
-.save-query-btn:hover { background: #eef2ff; }
+.save-query-btn:hover { background: var(--accent-bg); }
 
 /* ── Save input row ── */
 .save-input-row {
@@ -192,19 +192,20 @@
 .save-name-input {
   flex: 1;
   padding: 0.45rem 0.75rem;
-  border: 1.5px solid #ddd;
+  border: 1.5px solid var(--border-input);
   border-radius: 6px;
   font-size: 0.9rem;
-  color: #333;
+  color: var(--text-primary);
+  background: var(--bg-surface);
   outline: none;
   transition: border-color 0.15s;
 }
 
-.save-name-input:focus { border-color: #667eea; }
+.save-name-input:focus { border-color: var(--accent); }
 
 .save-confirm-btn {
   padding: 0.45rem 0.9rem;
-  background: #667eea;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -213,24 +214,24 @@
   font-weight: 600;
 }
 
-.save-confirm-btn:hover { background: #5568d3; }
+.save-confirm-btn:hover { background: var(--accent-hover); }
 
 .save-cancel-btn {
   padding: 0.45rem 0.6rem;
-  background: white;
-  color: #999;
-  border: 1.5px solid #ddd;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-input);
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.88rem;
   font-weight: 600;
 }
 
-.save-cancel-btn:hover { background: #f8f8f8; color: #555; }
+.save-cancel-btn:hover { background: var(--bg-surface-2); color: var(--text-secondary); }
 
 /* ── Result textarea ── */
 .result-empty {
-  color: #888;
+  color: var(--text-faint);
   font-size: 0.95rem;
   text-align: center;
   padding: 1rem 0;
@@ -239,23 +240,23 @@
 .result-string {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-family: 'Courier New', monospace;
   font-size: 0.82rem;
-  color: #333;
-  background: #fafafa;
+  color: var(--text-primary);
+  background: var(--bg-surface-3);
   resize: none;
   box-sizing: border-box;
   cursor: text;
   line-height: 1.6;
 }
 
-.result-string:focus { outline: none; border-color: #667eea; }
+.result-string:focus { outline: none; border-color: var(--accent); }
 
 /* ── Saved queries ── */
 .saved-section {
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border-light);
   padding-top: 1.25rem;
   margin-top: 1.5rem;
 }
@@ -269,13 +270,13 @@
 .saved-chip {
   display: flex;
   align-items: stretch;
-  border: 1.5px solid #e5e5e5;
+  border: 1.5px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
   transition: border-color 0.15s;
 }
 
-.saved-chip:hover { border-color: #667eea; }
+.saved-chip:hover { border-color: var(--accent); }
 
 .saved-load {
   flex: 1;
@@ -290,28 +291,29 @@
   text-align: left;
 }
 
-.saved-load:hover { background: #f5f7ff; }
+.saved-load:hover { background: var(--accent-bg); }
 
 .saved-name {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .saved-meta {
   font-size: 0.76rem;
-  color: #999;
+  color: var(--text-xfaint);
 }
 
 .saved-delete {
   padding: 0 0.75rem;
   background: none;
   border: none;
-  border-left: 1px solid #eee;
+  border-left: 1px solid var(--border-light);
   cursor: pointer;
-  color: #ccc;
+  color: var(--border);
   font-size: 0.8rem;
   transition: background 0.15s, color 0.15s;
 }
 
 .saved-delete:hover { background: #fff0f0; color: #ef4444; }
+[data-theme="dark"] .saved-delete:hover { background: #2a0a0a; color: #ef4444; }

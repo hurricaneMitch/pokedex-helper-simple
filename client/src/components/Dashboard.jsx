@@ -1,6 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
+
+function useDarkMode() {
+  const [dark, setDark] = useState(
+    () => document.documentElement.getAttribute('data-theme') === 'dark'
+  );
+  const toggle = useCallback(() => {
+    setDark(d => {
+      const next = !d;
+      document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      return next;
+    });
+  }, []);
+  return [dark, toggle];
+}
 import pokemonService from '../services/pokemonService';
 import PokemonGrid from './PokemonGrid';
 import PokemonForm from './PokemonForm';
@@ -22,6 +37,7 @@ const CATEGORIES = [
 ];
 
 export default function Dashboard() {
+  const [dark, toggleDark]                    = useDarkMode();
   const [viewMode, setViewMode]               = useState('grid');
   const [searchQuery, setSearchQuery]         = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState(null);
@@ -127,6 +143,9 @@ export default function Dashboard() {
           <span className="hstat dynamax"      title="Dynamax">D {stats.dynamax}</span>
           <span className="hstat gigantamax"   title="Gigantamax">GX {stats.gigantamax}</span>
         </div>
+        <button onClick={toggleDark} className="theme-toggle-btn" title={dark ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {dark ? '☀️' : '🌙'}
+        </button>
         <button onClick={handleLogout} className="logout-btn">Logout</button>
       </header>
 
