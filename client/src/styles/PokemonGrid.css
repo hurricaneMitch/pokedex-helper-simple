@@ -8,7 +8,7 @@
 }
 
 .pokedex-card {
-  background: white;
+  background: var(--bg-surface);
   border-radius: 8px;
   padding: 8px 4px 6px;
   cursor: pointer;
@@ -22,11 +22,11 @@
 .pokedex-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
-  border-color: #667eea;
+  border-color: var(--accent);
 }
 
 .pokedex-card.tracked {
-  background: #f8f7ff;
+  background: var(--bg-surface-2);
 }
 
 .pokedex-card img {
@@ -41,7 +41,7 @@
 .poke-name {
   display: block;
   font-size: 0.65rem;
-  color: #555;
+  color: var(--text-secondary);
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -69,7 +69,7 @@
 .badge.greatleague  { color: #14b8a6; font-weight: 700; }
 .badge.ultraleague  { color: #8b5cf6; font-weight: 700; }
 .badge.masterleague { color: #b45309; font-weight: 700; }
-.badge.dynamax      { color: #1f2937; font-weight: 700; }
+.badge.dynamax      { color: #94a3b8; font-weight: 700; }
 .badge.gigantamax   { color: #db2777; font-weight: 700; }
 
 /* ── Bulk Add mode ── */
@@ -107,7 +107,7 @@
   text-align: center;
   padding: 3rem;
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
-.grid-error { color: #c33; }
+.grid-error { color: #ef4444; }
